@@ -179,11 +179,14 @@ class KernelManager(ConnectionFileMixin):
     def format_kernel_cmd(self, extra_arguments=None):
         """replace templated args (e.g. {connection_file})"""
         extra_arguments = extra_arguments or []
+        print('KERNEL_CMD = ',self.kernel_cmd)
         if self.kernel_cmd:
             cmd = self.kernel_cmd + extra_arguments
         else:
-            cmd = self.kernel_spec.argv + extra_arguments
-
+            path = os.getcwd()
+            print(path)
+            extra_arguments = ['~/fastfreeze/fastfreeze', 'run', '--image-url', 'file:' + path + '/nameofkernel2.img', '--']
+            cmd =  extra_arguments + self.kernel_spec.argv
         if cmd and cmd[0] in {'python',
                               'python%i' % sys.version_info[0],
                               'python%i.%i' % sys.version_info[:2]}:
