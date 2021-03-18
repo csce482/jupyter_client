@@ -182,8 +182,11 @@ class KernelManager(ConnectionFileMixin):
         if self.kernel_cmd:
             cmd = self.kernel_cmd + extra_arguments
         else:
-            cmd = self.kernel_spec.argv + extra_arguments
-
+            path = os.getcwd()
+            extra_arguments = ['~/fastfreeze/fastfreeze', 'run', '--image-url', 'file:' + path + 'kernal1.img', '--']
+            cmd = extra_arguments + self.kernel_spec.argv 
+            print("-------------cmd-------------")
+            print(cmd)
         if cmd and cmd[0] in {'python',
                               'python%i' % sys.version_info[0],
                               'python%i.%i' % sys.version_info[:2]}:
@@ -194,7 +197,6 @@ class KernelManager(ConnectionFileMixin):
             # activating the env, python on PATH may not be sys.executable,
             # but it should be.
             cmd[0] = sys.executable
-
         # Make sure to use the realpath for the connection_file
         # On windows, when running with the store python, the connection_file path
         # is not usable by non python kernels because the path is being rerouted when
@@ -221,6 +223,7 @@ class KernelManager(ConnectionFileMixin):
 
         override in a subclass to launch kernel subprocesses differently
         """
+
         return launch_kernel(kernel_cmd, **kw)
 
     # Control socket used for polite kernel shutdown
@@ -310,7 +313,6 @@ class KernelManager(ConnectionFileMixin):
              and launching the kernel (e.g. Popen kwargs).
         """
         kernel_cmd, kw = self.pre_start_kernel(**kw)
-
         # launch the kernel subprocess
         self.log.debug("Starting kernel: %s", kernel_cmd)
         self.kernel = self._launch_kernel(kernel_cmd, **kw)

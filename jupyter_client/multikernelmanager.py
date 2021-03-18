@@ -442,7 +442,7 @@ class MultiKernelManager(LoggingConfigurable):
         :param kwargs:
         :return: string-ized version 4 uuid
         """
-        return str(uuid.uuid4())
+        return str(1)
 
 
 class AsyncMultiKernelManager(MultiKernelManager):

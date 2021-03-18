@@ -128,8 +128,8 @@ def launch_kernel(cmd, stdin=None, stdout=None, stderr=None, env=None,
     try:
         # Allow to use ~/ in the command or its arguments
         cmd = list(map(os.path.expanduser, cmd))
-
         proc = Popen(cmd, **kwargs)
+
     except Exception as exc:
         msg = (
             "Failed to run command:\n{}\n"
