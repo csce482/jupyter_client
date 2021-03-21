@@ -183,7 +183,7 @@ class KernelManager(ConnectionFileMixin):
             cmd = self.kernel_cmd + extra_arguments
         else:
             path = os.getcwd()
-            extra_arguments = ['~/fastfreeze/fastfreeze', 'run', '--image-url', 'file:' + path + 'kernal1.img', '--']
+            extra_arguments = ['~/fastfreeze/fastfreeze', 'run', '--image-url', 'file:' + path + '/kernal3.img', '--']
             cmd = extra_arguments + self.kernel_spec.argv 
             print("-------------cmd-------------")
             print(cmd)

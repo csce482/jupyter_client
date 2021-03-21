@@ -442,7 +442,7 @@ class MultiKernelManager(LoggingConfigurable):
         :param kwargs:
         :return: string-ized version 4 uuid
         """
-        return str(1)
+        return str(uuid.uuid3(uuid.NAMESPACE_DNS, 'checkpoint.kernel'))
 
 
 class AsyncMultiKernelManager(MultiKernelManager):
