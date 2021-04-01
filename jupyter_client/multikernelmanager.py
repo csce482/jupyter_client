@@ -442,7 +442,17 @@ class MultiKernelManager(LoggingConfigurable):
         :param kwargs:
         :return: string-ized version 4 uuid
         """
-        return str(uuid.uuid4())
+
+        #ADD IF STATEMENT HERE 
+        # if ff == true:
+            # return str(uuid.uuid3(uuid.NAMESPACE_DNS, 'checkpoint.kernel'))
+        #else
+            #return str(uuid.uuid4()) 
+        #return str(uuid.uuid4())
+        ff = os.environ["CHECKPOINT"]
+        self.log.warning("from new_kernel_id")
+        self.log.warning(ff)
+        return str(uuid.uuid3(uuid.NAMESPACE_DNS, 'checkpoint.kernel'))
 
 
 class AsyncMultiKernelManager(MultiKernelManager):
