@@ -457,8 +457,10 @@ class MultiKernelManager(LoggingConfigurable):
         self.log.warning(kernel_name)
         #ADD IF STATEMENT HERE 
         if kernel_name.endswith("-checkpoint"):
+            self.log.warning("Checkpointing Enabled")
             self.log.warning(kernel_name)
         else:
+            self.log.warning("Checkpointing Disabled")
             self.log.warning(kernel_name)
 
 

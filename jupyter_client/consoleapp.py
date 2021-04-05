@@ -290,7 +290,6 @@ class JupyterConsoleApp(ConnectionFileMixin):
         self.kernel_manager.client_factory = self.kernel_client_class
         kwargs = {}
         kwargs['extra_arguments'] = self.kernel_argv
-        self.log.info("JACOBS Called start_kernel function with kwargs")
         self.kernel_manager.start_kernel(**kwargs)
         atexit.register(self.kernel_manager.cleanup_ipc_files)
 

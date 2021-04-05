@@ -94,7 +94,7 @@ def write_connection_file(fname=None, shell_port=0, iopub_port=0, stdin_port=0, 
             sock = socket.socket()
             # struct.pack('ii', (0,0)) is 8 null bytes
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, b'\0' * 8)
-            sock.bind((ip, 0)) #JACOB: this will tell pyton to pick a random port 
+            sock.bind((ip, 0)) #CJ: this will tell pyton to pick a random port 
             ports.append(sock)
         for i, sock in enumerate(ports):
             port = sock.getsockname()[1]
