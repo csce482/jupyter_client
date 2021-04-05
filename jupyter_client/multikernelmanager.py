@@ -155,7 +155,7 @@ class MultiKernelManager(LoggingConfigurable):
 
     def pre_start_kernel(self, kernel_name, kwargs):
         # kwargs should be mutable, passing it as a dict argument.
-        kernel_id = kwargs.pop('kernel_id', self.new_kernel_id(**kwargs))
+        kernel_id = kwargs.pop('kernel_id', self.new_kernel_id(kernel_name, **kwargs))
         if kernel_id in self:
             raise DuplicateKernelError('Kernel already exists: %s' % kernel_id)
 
@@ -182,9 +182,20 @@ class MultiKernelManager(LoggingConfigurable):
 
         The kernel ID for the newly started kernel is returned.
         """
+
+        # fastfreeze = False
+        # if kernel_name.endswith("-checkpoint"):
+        #     kernel_name = kernel_name.replace("-checkpoint", "")
+        #     self.log.warning('Checkpointing enabled')
+        #     fastfreeze = True
+        # else:
+        #     self.log.warning('Checkpointing disable')
+        self.log.warn("multi start_kernel()")
+        
         km, kernel_name, kernel_id = self.pre_start_kernel(kernel_name, kwargs)
-        km.start_kernel(**kwargs)
+        km.start_kernel(**kwargs) 
         self._kernels[kernel_id] = km
+        #self.log.info("FASTFREEZE ROESHA", kwargs['fastfreeze'])
         return kernel_id
 
     def shutdown_kernel(self, kernel_id, now=False, restart=False):
@@ -435,23 +446,29 @@ class MultiKernelManager(LoggingConfigurable):
         stream : zmq Socket or ZMQStream
         """
 
-    def new_kernel_id(self, **kwargs):
+    def new_kernel_id(self, kernel_name="", **kwargs):
         """
         Returns the id to associate with the kernel for this request. Subclasses may override
         this method to substitute other sources of kernel ids.
         :param kwargs:
         :return: string-ized version 4 uuid
         """
-
+        self.log.warning("from new_kernel_id")
+        self.log.warning(kernel_name)
         #ADD IF STATEMENT HERE 
+        if kernel_name.endswith("-checkpoint"):
+            self.log.warning(kernel_name)
+        else:
+            self.log.warning(kernel_name)
+
+
+        
         # if ff == true:
             # return str(uuid.uuid3(uuid.NAMESPACE_DNS, 'checkpoint.kernel'))
         #else
             #return str(uuid.uuid4()) 
         #return str(uuid.uuid4())
-        ff = os.environ["CHECKPOINT"]
-        self.log.warning("from new_kernel_id")
-        self.log.warning(ff)
+    
         return str(uuid.uuid3(uuid.NAMESPACE_DNS, 'checkpoint.kernel'))
 
 
@@ -479,6 +496,9 @@ class AsyncMultiKernelManager(MultiKernelManager):
         The kernel ID for the newly started kernel is returned.
         """
         km, kernel_name, kernel_id = self.pre_start_kernel(kernel_name, kwargs)
+        self.log.warning("From start_kernel JACOB")
+        self.log.warning(kernel_name)
+        self.log.warning(kwargs)
         if not isinstance(km, AsyncKernelManager):
             self.log.warning("Kernel manager class ({km_class}) is not an instance of 'AsyncKernelManager'!".
                              format(km_class=self.kernel_manager_class.__class__))

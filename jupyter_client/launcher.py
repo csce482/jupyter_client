@@ -11,7 +11,7 @@ from traitlets.log import get_logger
 
 
 def launch_kernel(cmd, stdin=None, stdout=None, stderr=None, env=None,
-                  independent=False, cwd=None, **kw):
+                  independent=False, cwd=None, fastfreeze=False, **kw):
     """ Launches a localhost kernel, binding to the specified ports.
 
     Parameters

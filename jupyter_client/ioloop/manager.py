@@ -23,7 +23,7 @@ def as_zmqstream(f):
 
 
 class IOLoopKernelManager(KernelManager):
-
+    #JACOB
     loop = Instance('tornado.ioloop.IOLoop')
 
     def _loop_default(self):

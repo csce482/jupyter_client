@@ -226,6 +226,8 @@ class KernelSpecManager(LoggingConfigurable):
             self.log.warning("Kernelspec name %r is invalid: %s", kernel_name,
                              _kernel_name_description)
 
+        kernel_name = kernel_name.replace("-checkpoint", "")
+
         resource_dir = self._find_spec_directory(kernel_name.lower())
         if resource_dir is None:
             raise NoSuchKernel(kernel_name)

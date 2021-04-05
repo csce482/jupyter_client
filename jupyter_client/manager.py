@@ -181,7 +181,6 @@ class KernelManager(ConnectionFileMixin):
         """replace templated args (e.g. {connection_file})"""
         extra_arguments = extra_arguments or []
         self.log.info("from jupyter_client")
-        self.log.info(os.environ["CHECKPOINT"])
 
         if self.kernel_cmd:
             cmd = self.kernel_cmd + extra_arguments
@@ -334,13 +333,18 @@ class KernelManager(ConnectionFileMixin):
              keyword arguments that are passed down to build the kernel_cmd
              and launching the kernel (e.g. Popen kwargs).
         """
+        self.log.warn("manager.py start_kernel 1")
         kernel_cmd, kw = self.pre_start_kernel(**kw)
+        self.log.warn("manager.py start_kernel 2")
 
         # launch the kernel subprocess
         self.log.debug("Starting kernel: %s", kernel_cmd)
         self.kernel = self._launch_kernel(kernel_cmd, **kw)
-        print('called start_kernel manager.py')
+        self.log.warn("manager.py start_kernel 3")
+
         self.post_start_kernel(**kw)
+        self.log.warn("manager.py start_kernel 4")
+
 
     def request_shutdown(self, restart=False):
         """Send a shutdown request via control channel
