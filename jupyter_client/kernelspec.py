@@ -217,7 +217,7 @@ class KernelSpecManager(LoggingConfigurable):
                 return RESOURCES
 
     def get_kernel_spec(self, kernel_name):
-        print("Called get_kernel_spec from client/kernelspec.py")
+        #print("Called get_kernel_spec from client/kernelspec.py")
         """Returns a :class:`KernelSpec` instance for the given kernel_name.
 
         Raises :exc:`NoSuchKernel` if the given kernel name is not found.
