@@ -287,6 +287,17 @@ class MultiKernelManager(LoggingConfigurable):
         self.log.info("Kernel interrupted: %s" % kernel_id)
 
     @kernel_method
+    def checkpoint_kernel(self, kernel_id):
+        """Checkpoint the kernel.
+
+        Parameters
+        ==========
+        kernel_id : uuid
+            The id of the kernel to interrupt.
+        """
+        self.log.info("Kernel checkpointed: %s" % kernel_id)    
+
+    @kernel_method
     def signal_kernel(self, kernel_id, signum):
         """Sends a signal to the kernel by its uuid.
 
@@ -453,15 +464,15 @@ class MultiKernelManager(LoggingConfigurable):
         :param kwargs:
         :return: string-ized version 4 uuid
         """
-        # self.log.warning("from new_kernel_id")
-        # self.log.warning(kernel_name)
-        # #ADD IF STATEMENT HERE 
-        # if kernel_name.endswith("-checkpoint"):
-        #     self.log.warning("Checkpointing Enabled")
-        #     self.log.warning(kernel_name)
-        # else:
-        #     self.log.warning("Checkpointing Disabled")
-        #     self.log.warning(kernel_name)
+        self.log.warning("from new_kernel_id")
+        self.log.warning(kernel_name)
+        #ADD IF STATEMENT HERE 
+        if kernel_name.endswith("-checkpoint"):
+            self.log.warning("Checkpointing Enabled")
+            self.log.warning(kernel_name)
+        else:
+            self.log.warning("Checkpointing Disabled")
+            self.log.warning(kernel_name)
 
 
         
@@ -470,8 +481,14 @@ class MultiKernelManager(LoggingConfigurable):
         #else
             #return str(uuid.uuid4()) 
         #return str(uuid.uuid4())
-    
-        return str(uuid.uuid3(uuid.NAMESPACE_DNS, 'checkpoint.kernel'))
+
+        #if the kernel is checkpoint, set it to a constant UUID variable
+        #else random UUID varialbe
+        if 'checkpoint' in kernel_name:
+            return str(uuid.uuid3(uuid.NAMESPACE_DNS, 'checkpoint.kernel'))
+        
+        return str(uuid.uuid4())
+        #return str(uuid.uuid3(uuid.NAMESPACE_DNS, 'checkpoint.kernel'))
 
 
 class AsyncMultiKernelManager(MultiKernelManager):
@@ -559,6 +576,18 @@ class AsyncMultiKernelManager(MultiKernelManager):
         km = self.get_kernel(kernel_id)
         await km.interrupt_kernel()
         self.log.info("Kernel interrupted: %s" % kernel_id)
+
+    async def checkpoint_kernel(self, kernel_id):
+        """Checkpoint the kernel.
+
+        Parameters
+        ==========
+        kernel_id : uuid
+            The id of the kernel to interrupt.
+        """
+        km = self.get_kernel(kernel_id)
+        await km.checkpoint_kernel()
+        self.log.info("Kernel checkpointed: %s" % kernel_id)
 
     async def signal_kernel(self, kernel_id, signum):
         """Sends a signal to the kernel by its uuid.

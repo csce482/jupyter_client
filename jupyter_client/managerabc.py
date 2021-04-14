@@ -43,6 +43,10 @@ class KernelManagerABC(object, metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
+    def checkpoint_kernel(self):
+        pass
+
+    @abc.abstractmethod
     def signal_kernel(self, signum):
         pass
 
