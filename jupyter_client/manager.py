@@ -179,12 +179,6 @@ class KernelManager(ConnectionFileMixin):
     def format_kernel_cmd(self, extra_arguments=None):
         """replace templated args (e.g. {connection_file})"""
         extra_arguments = extra_arguments or []
-        #self.log.info("from jupyter_client")
-
-        self.log.warning("Kernel name: ")
-        self.log.warning(self.kernel_name)
-        self.log.warning("\n")
-        
         
         if self.kernel_cmd:
             cmd = self.kernel_cmd + extra_arguments
@@ -198,24 +192,6 @@ class KernelManager(ConnectionFileMixin):
             else:
                 extra_arguments = []
                 cmd = self.kernel_spec.argv + extra_arguments
-
-            # path = os.getcwd()
-            # print(path)
-            # extra_arguments = ['~/fastfreeze/fastfreeze', 'run', '--image-url', 'file:' + path + '/nameofkernel2.img', '--']
-            # cmd =  extra_arguments + self.kernel_spec.argv 
-            #check = os.getenviron["FASTFREEZE"]
-            # path = os.getcwd()
-            # #print('path from client: ', path)
-            # #ADD IF STATEMENT
-            # img_url = '/kernel3.img'
-            # extra_arguments = ['~/fastfreeze/fastfreeze', 'run', '--image-url', 'file:' + path + img_url, '--']
-            # cmd = extra_arguments + self.kernel_spec.argv
-            # if check =="1":
-            #     print("checkpointing on")
-            #     cmd = extra_arguments + self.kernel_spec.argv
-            # else:
-            #     print("checkpointing off")
-            #     cmd = self.kernel_spec.argv
              
             print("-------------cmd-------------")
             print(cmd)
@@ -562,22 +538,9 @@ class KernelManager(ConnectionFileMixin):
         """checkpoints the kernel by invoking fastfreeze.
         """
         if self.has_kernel:
-            # interrupt_mode = self.kernel_spec.interrupt_mode
-            # if interrupt_mode == 'signal':
-            #     if sys.platform == 'win32':
-            #         from .win_interrupt import send_interrupt
-            #         send_interrupt(self.kernel.win32_interrupt_event)
-            #     else:
-            #         self.signal_kernel(signal.SIGINT)
-
-            # elif interrupt_mode == 'message':
-            #     msg = self.session.msg("interrupt_request", content={})
-            #     self._connect_control_socket()
-            #     self.session.send(self._control_socket, msg)
             path = os.getcwd()
             img_url = '/kernel3.img'
 
-            #print('path from notebook: ', path)
             filecmd = '~/fastfreeze/fastfreeze checkpoint --image-url file:' + path + '/kernel3.img kernel3.img --leave-running'
             os.system(filecmd)
         else:

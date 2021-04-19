@@ -464,23 +464,6 @@ class MultiKernelManager(LoggingConfigurable):
         :param kwargs:
         :return: string-ized version 4 uuid
         """
-        self.log.warning("from new_kernel_id")
-        self.log.warning(kernel_name)
-        #ADD IF STATEMENT HERE 
-        if kernel_name.endswith("-checkpoint"):
-            self.log.warning("Checkpointing Enabled")
-            self.log.warning(kernel_name)
-        else:
-            self.log.warning("Checkpointing Disabled")
-            self.log.warning(kernel_name)
-
-
-        
-        # if ff == true:
-            # return str(uuid.uuid3(uuid.NAMESPACE_DNS, 'checkpoint.kernel'))
-        #else
-            #return str(uuid.uuid4()) 
-        #return str(uuid.uuid4())
 
         #if the kernel is checkpoint, set it to a constant UUID variable
         #else random UUID varialbe
@@ -488,7 +471,6 @@ class MultiKernelManager(LoggingConfigurable):
             return str(uuid.uuid3(uuid.NAMESPACE_DNS, 'checkpoint.kernel'))
         
         return str(uuid.uuid4())
-        #return str(uuid.uuid3(uuid.NAMESPACE_DNS, 'checkpoint.kernel'))
 
 
 class AsyncMultiKernelManager(MultiKernelManager):
