@@ -179,30 +179,22 @@ class KernelManager(ConnectionFileMixin):
     def format_kernel_cmd(self, extra_arguments=None):
         """replace templated args (e.g. {connection_file})"""
         extra_arguments = extra_arguments or []
-        #self.log.info("from jupyter_client")
-
+        
         if self.kernel_cmd:
             cmd = self.kernel_cmd + extra_arguments
         else: #goes here when kernel_cmd asnt been created yet
-            # path = os.getcwd()
-            # print(path)
-            # extra_arguments = ['~/fastfreeze/fastfreeze', 'run', '--image-url', 'file:' + path + '/nameofkernel2.img', '--']
-            # cmd =  extra_arguments + self.kernel_spec.argv 
-            #check = os.getenviron["FASTFREEZE"]
-            path = os.getcwd()
-            #print('path from client: ', path)
 
-            extra_arguments = ['~/fastfreeze/fastfreeze', 'run', '--image-url', 'file:' + path + '/kernel3.img', '--']
-            cmd = extra_arguments + self.kernel_spec.argv
-            # if check =="1":
-            #     print("checkpointing on")
-            #     cmd = extra_arguments + self.kernel_spec.argv
-            # else:
-            #     print("checkpointing off")
-            #     cmd = self.kernel_spec.argv
+            if 'checkpoint' in self.kernel_name:
+                path = os.getcwd()
+                img_url = '/kernel3.img'
+                extra_arguments = ['~/fastfreeze/fastfreeze', 'run', '--image-url', 'file:' + path + img_url, '--']
+                cmd = extra_arguments + self.kernel_spec.argv
+            else:
+                extra_arguments = []
+                cmd = self.kernel_spec.argv + extra_arguments
              
-            #print("-------------cmd-------------")
-            #print(cmd)
+            print("-------------cmd-------------")
+            print(cmd)
 
         if cmd and cmd[0] in {'python',
                               'python%i' % sys.version_info[0],
@@ -541,6 +533,18 @@ class KernelManager(ConnectionFileMixin):
                 self.session.send(self._control_socket, msg)
         else:
             raise RuntimeError("Cannot interrupt kernel. No kernel is running!")
+
+    def checkpoint_kernel(self):
+        """checkpoints the kernel by invoking fastfreeze.
+        """
+        if self.has_kernel:
+            path = os.getcwd()
+            img_url = '/kernel3.img'
+
+            filecmd = '~/fastfreeze/fastfreeze checkpoint --image-url file:' + path + '/kernel3.img kernel3.img --leave-running'
+            os.system(filecmd)
+        else:
+            raise RuntimeError("Cannot checkpoint kernel. No kernel is running!")   
 
     def signal_kernel(self, signum):
         """Sends a signal to the process group of the kernel (this
